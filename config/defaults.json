@@ -1,0 +1,19 @@
+{
+  "repository": "gs-mrozmus/widgets-repo-template",
+  "contentFile": "content.html",
+  "contentMethod": "GET",
+  "requiresAuthentication": false,
+  "cacheStrategy": "no-cache",
+  "containers": [
+    "Full width"
+  ],
+  "widgetsLibrary": true,
+  "settings": {
+    "configurable": true,
+    "editable": true,
+    "removable": true,
+    "shared": false,
+    "movable": false
+  }
+}
+
