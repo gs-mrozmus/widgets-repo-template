@@ -1,14 +1,14 @@
 {
   "widgets": [
     {
-      "title": "Custom External Widget",
-      "description": "External Widget for displaying interesting content",
-      "version": "1.0.1",
-      "category": "external",
-      "type": "custom_external_widget",
-      "imageName": "custom_external_widget",
+      "title": "Demo widget",
+      "description": "Demo widget for presentation purposes",
+      "version": "1.0.0",
+      "category": "Demo",
+      "type": "demo_widget",
+      "imageName": "demo_widget",
       "content": {
-        "endpoint": "https://raw.githubusercontent.com/gs-mrozmus/widgets-repo-template/refs/heads/main/widgets/custom_external_widget/content.html",
+        "endpoint": "https://raw.githubusercontent.com/gs-mrozmus/widgets-repo-template/refs/heads/time-widget/widgets/demo_widget/content.html",
         "method": "GET",
         "requiresAuthentication": false,
         "cacheStrategy": "no-cache"
@@ -26,14 +26,14 @@
       }
     },
     {
-      "title": "Demo widget",
-      "description": "Demo widget for displaying interesting content",
+      "title": "Time Widget",
+      "description": "Display current time with retro 2000's style",
       "version": "1.0.0",
-      "category": "Demo",
-      "type": "demo_widget",
-      "imageName": "demo_widget",
+      "category": "Utility",
+      "type": "time_widget",
+      "imageName": "time_widget",
       "content": {
-        "endpoint": "https://raw.githubusercontent.com/gs-mrozmus/widgets-repo-template/refs/heads/main/widgets/demo_widget/content.html",
+        "endpoint": "https://raw.githubusercontent.com/gs-mrozmus/widgets-repo-template/refs/heads/time-widget/widgets/time_widget/content.html",
         "method": "GET",
         "requiresAuthentication": false,
         "cacheStrategy": "no-cache"
