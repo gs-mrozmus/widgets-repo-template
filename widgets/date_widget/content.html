@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    .date-widget-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 200px;
+      padding: 20px;
+      font-family: 'Comic Sans MS', 'Marker Felt', cursive, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .date-display {
+      background: linear-gradient(180deg, #ffffff 0%, #e0e7ff 100%);
+      border: 3px solid #4a5568;
+      border-radius: 15px;
+      padding: 30px 50px;
+      text-align: center;
+      box-shadow: 
+        0 8px 16px rgba(0, 0, 0, 0.3),
+        inset 0 1px 3px rgba(255, 255, 255, 0.8);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    .date-title {
+      font-size: 24px;
+      color: #4c1d95;
+      text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+      margin-bottom: 15px;
+      letter-spacing: 2px;
+    }
+    
+    .date-value {
+      font-size: 36px;
+      font-weight: bold;
+      color: #1e3a8a;
+      text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.6);
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .day-of-week {
+      font-size: 18px;
+      color: #6d28d9;
+      margin-top: 10px;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.02);
+      }
+    }
+    
+    .sparkle {
+      display: inline-block;
+      animation: sparkle 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes sparkle {
+      0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.5;
+        transform: scale(1.2);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="date-widget-container">
+    <div class="date-display">
+      <div class="date-title"><span class="sparkle">✨</span> Today's Date <span class="sparkle">✨</span></div>
+      <div class="date-value" id="currentDate"></div>
+      <div class="day-of-week" id="dayOfWeek"></div>
+    </div>
+  </div>
+
+  <script>
+    function updateDate() {
+      const now = new Date();
+      
+      const options = { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      };
+      
+      const dateString = now.toLocaleDateString('en-US', options);
+      
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const dayName = days[now.getDay()];
+      
+      document.getElementById('currentDate').textContent = dateString;
+      document.getElementById('dayOfWeek').textContent = dayName;
+    }
+    
+    // Update date immediately
+    updateDate();
+    
+    // Update date at midnight
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    const msUntilMidnight = tomorrow - now;
+    
+    setTimeout(function() {
+      updateDate();
+      setInterval(updateDate, 24 * 60 * 60 * 1000); // Update daily
+    }, msUntilMidnight);
+  </script>
+</body>
+</html>
+

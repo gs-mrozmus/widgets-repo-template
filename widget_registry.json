@@ -1,14 +1,14 @@
 {
   "widgets": [
     {
-      "title": "Custom External Widget",
-      "description": "External Widget for displaying interesting content",
-      "version": "1.0.1",
-      "category": "external",
-      "type": "custom_external_widget",
-      "imageName": "custom_external_widget",
+      "title": "Current Date Widget",
+      "description": "Displays the current date with nostalgic 2000's styling",
+      "version": "1.0.0",
+      "category": "Utility",
+      "type": "date_widget",
+      "imageName": "date_widget",
       "content": {
-        "endpoint": "https://raw.githubusercontent.com/gs-mrozmus/widgets-repo-template/refs/heads/main/widgets/custom_external_widget/content.html",
+        "endpoint": "https://raw.githubusercontent.com/gs-mrozmus/widgets-repo-template/refs/heads/feature/date-widget/widgets/date_widget/content.html",
         "method": "GET",
         "requiresAuthentication": false,
         "cacheStrategy": "no-cache"
@@ -27,13 +27,13 @@
     },
     {
       "title": "Demo widget",
-      "description": "Demo widget for displaying interesting content",
+      "description": "Demo widget for presentation purposes",
       "version": "1.0.0",
       "category": "Demo",
       "type": "demo_widget",
       "imageName": "demo_widget",
       "content": {
-        "endpoint": "https://raw.githubusercontent.com/gs-mrozmus/widgets-repo-template/refs/heads/main/widgets/demo_widget/content.html",
+        "endpoint": "https://raw.githubusercontent.com/gs-mrozmus/widgets-repo-template/refs/heads/feature/date-widget/widgets/demo_widget/content.html",
         "method": "GET",
         "requiresAuthentication": false,
         "cacheStrategy": "no-cache"
