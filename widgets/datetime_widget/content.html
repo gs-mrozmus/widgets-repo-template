@@ -1,0 +1,122 @@
+<div class="datetime-widget-2000s">
+  <div class="widget-header">
+    <span class="header-text">📅 Current Date & Time 🕐</span>
+  </div>
+  <div class="widget-body">
+    <div class="date-display" id="dateDisplay"></div>
+    <div class="time-display" id="timeDisplay"></div>
+    <div class="day-display" id="dayDisplay"></div>
+  </div>
+</div>
+
+<style>
+  .datetime-widget-2000s {
+    font-family: 'Arial Black', 'Arial Bold', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: 4px solid #FFD700;
+    border-radius: 15px;
+    padding: 0;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    max-width: 400px;
+    margin: 20px auto;
+  }
+
+  .widget-header {
+    background: linear-gradient(180deg, #FFD700 0%, #FFA500 100%);
+    border-bottom: 3px solid #FF6347;
+    padding: 12px;
+    text-align: center;
+    border-radius: 11px 11px 0 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .header-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000080;
+    text-shadow: 2px 2px 2px rgba(255, 255, 255, 0.7);
+    letter-spacing: 1px;
+  }
+
+  .widget-body {
+    padding: 25px;
+    text-align: center;
+  }
+
+  .date-display {
+    background: linear-gradient(180deg, #00CED1 0%, #4682B4 100%);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 3px solid #00BFFF;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .time-display {
+    background: linear-gradient(180deg, #32CD32 0%, #228B22 100%);
+    color: #FFFF00;
+    font-size: 36px;
+    font-weight: bold;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 3px solid #00FF00;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+  }
+
+  .day-display {
+    background: linear-gradient(180deg, #FF69B4 0%, #FF1493 100%);
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 12px;
+    border: 3px solid #FF00FF;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+  }
+
+  .time-display {
+    animation: pulse 2s ease-in-out infinite;
+  }
+</style>
+
+<script>
+  function updateDateTime() {
+    const now = new Date();
+    
+    // Format date (e.g., "November 4, 2025")
+    const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    const dateStr = now.toLocaleDateString('en-US', dateOptions);
+    
+    // Format time (e.g., "3:45:12 PM")
+    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+    const timeStr = now.toLocaleTimeString('en-US', timeOptions);
+    
+    // Get day of week (e.g., "Tuesday")
+    const dayOptions = { weekday: 'long' };
+    const dayStr = now.toLocaleDateString('en-US', dayOptions);
+    
+    // Update DOM elements
+    document.getElementById('dateDisplay').textContent = dateStr;
+    document.getElementById('timeDisplay').textContent = timeStr;
+    document.getElementById('dayDisplay').textContent = dayStr;
+  }
+  
+  // Update immediately and then every second
+  updateDateTime();
+  setInterval(updateDateTime, 1000);
+</script>
+
