@@ -1,8 +1,8 @@
 {
-  "version": "1.0.0",
-  "title": "Demo widget",
-  "description": "Demo widget for displaying interesting content",
-  "category": "Demo",
+  "version": "0.0.1",
+  "title": "Test demo widget",
+  "description": "Test demo widget",
+  "category": "Test",
   "imageName": "demo_widget"
 }
 
