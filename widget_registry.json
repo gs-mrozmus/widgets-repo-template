@@ -24,31 +24,6 @@
         "shared": false,
         "movable": false
       }
-    },
-    {
-      "title": "Demo widget",
-      "description": "Demo widget for presentation purposes",
-      "version": "1.0.0",
-      "category": "Demo",
-      "type": "demo_widget",
-      "imageName": "demo_widget",
-      "content": {
-        "endpoint": "https://raw.githubusercontent.com/gs-mrozmus/widgets-repo-template/refs/heads/datetime-widget/widgets/demo_widget/content.html",
-        "method": "GET",
-        "requiresAuthentication": false,
-        "cacheStrategy": "no-cache"
-      },
-      "containers": [
-        "Full width"
-      ],
-      "widgetsLibrary": true,
-      "settings": {
-        "configurable": true,
-        "editable": true,
-        "removable": true,
-        "shared": false,
-        "movable": false
-      }
     }
   ]
 }
