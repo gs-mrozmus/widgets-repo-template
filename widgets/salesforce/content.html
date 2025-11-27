@@ -1,0 +1,334 @@
+<div class="sf-widget-container">
+  <div class="guest-overlay" style="display: none;">
+    <div class="guest-overlay-message">
+      Sign in to access Salesforce ticketing
+    </div>
+  </div>
+
+  <h2>Salesforce Ticketing</h2>
+  <form id="caseForm">
+    <label for="contactName">Contact Name</label>
+    <input type="text" id="contactName" name="contactName" required>
+
+    <label for="phone">Phone</label>
+    <input type="text" id="phone" name="phone">
+
+    <label for="subject">Subject</label>
+    <input type="text" id="subject" name="subject" required>
+
+    <label for="description">Description</label>
+    <textarea id="description" name="description" required></textarea>
+
+    <div class="button-container">
+      <button type="submit">SUBMIT</button>
+    </div>
+  </form>
+
+  <div class="cases-section">
+    <div class="table-title">My Open Cases</div>
+    <table>
+      <thead>
+        <tr class="heading-row">
+          <th>Case Number</th>
+          <th>Subject</th>
+          <th>Status</th>
+          <th>Priority</th>
+        </tr>
+      </thead>
+      <tbody id="casesTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  h2 {
+    color: #3737b7;
+  }
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  input, textarea {
+    width: 100%;
+    margin-bottom: 22px;
+    padding: 7px;
+    box-sizing: border-box;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  textarea {
+    min-height: 75px;
+  }
+  .button-container {
+    text-align: right;
+  }
+  button {
+    background: #3737b7;
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 35px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  .cases-section {
+    margin-top: 55px;
+  }
+  .user-info {
+    margin-bottom: 4px;
+    font-weight: bold;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    background: #fff;
+  }
+  th, td {
+    border: 1px solid #bbb;
+    padding: 7px 12px;
+    font-size: 15px;
+  }
+  th {
+    background: #47475d;
+    color: #fff;
+    text-align: left;
+  }
+  .heading-row th {
+    background: #d9d9e6;
+    color: #333;
+    text-align: left;
+  }
+  .table-title {
+    background: #47475d;
+    color: #fff;
+    padding: 6px 10px;
+    font-weight: bold;
+  }
+  .sf-widget-container {
+    width: 80%;
+    margin: 32px auto;
+    border-radius: 16px;
+    padding: 28px 22px;
+    position: relative;
+  }
+  .guest-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(128, 128, 128, 0.8);
+    backdrop-filter: blur(3px);
+    border-radius: 16px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: all;
+  }
+  .guest-overlay-message {
+    background: #fff;
+    color: #333;
+    padding: 24px 32px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  .sf-widget-container.guest-mode > *:not(.guest-overlay) {
+    pointer-events: none;
+  }
+  @media (max-width: 600px) {
+    .sf-widget-container {
+      width: 98vw;
+      padding: 10px 5vw;
+    }
+  }
+</style>
+
+<script>
+(() => {
+  const widget = document.querySelector('registry-widget[data-widget-type="registry:platform:ootb_widgets:salesforce"]');
+  if (!widget || !widget.shadowRoot) {
+    console.error('Could not find registry-widget or its shadowRoot.');
+    return;
+  }
+
+  const root = widget.shadowRoot;
+  const sdk = new WidgetServiceSDK();
+
+  const isGuest = window.inSidedData &&
+                  window.inSidedData.user &&
+                  window.inSidedData.user.role === 'roles.guest';
+
+  const container = root.querySelector('.sf-widget-container');
+  const overlay = root.querySelector('.guest-overlay');
+
+  if (isGuest) {
+    if (overlay) {
+      overlay.style.display = 'flex';
+    }
+    if (container) {
+      container.classList.add('guest-mode');
+    }
+    return;
+  } else {
+    if (overlay) {
+      overlay.style.display = 'none';
+    }
+    if (container) {
+      container.classList.remove('guest-mode');
+    }
+  }
+
+  let contactFound = false;
+  let userContact = null;
+
+  const showCases = cases => {
+    const tbody = root.getElementById('casesTable');
+    if (!Array.isArray(cases) || cases.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="4" style="text-align:center;">No open cases</td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = cases.map(c => `
+      <tr>
+        <td>${c.CaseNumber || c.caseNumber || ""}</td>
+        <td>${c.Subject || c.subject || ""}</td>
+        <td>${c.Status || c.status || ""}</td>
+        <td>${c.Priority || c.priority || ""}</td>
+      </tr>
+    `).join('');
+  };
+
+  const fetchCases = () => {
+    const tbody = root.getElementById('casesTable');
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="4" style="text-align:center;">Loading...</td>
+      </tr>
+    `;
+
+    sdk.connectors.execute({
+      permalink: "salesforce-case-lookup-by-contact-email",
+      method: "GET"
+    }).then(response => {
+      const result = (response && response.result) ? response.result : response;
+      showCases(Array.isArray(result.records) ? result.records : []);
+    }).catch(() => {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="4" style="text-align:center;color:red;">Error loading cases</td>
+        </tr>
+      `;
+    });
+  };
+
+  const fetchContactAndMaybeCases = () => {
+    sdk.connectors.execute({
+      permalink: "salesforce-contact-lookup-by-email",
+      method: "GET"
+    }).then(response => {
+      const result = (response && response.result) ? response.result : response;
+      const contacts = Array.isArray(result.records) ? result.records : [];
+
+      const nameInput = root.getElementById('contactName');
+      const phoneInput = root.getElementById('phone');
+
+      if (contacts.length > 0) {
+        contactFound = true;
+        userContact = contacts[0];
+
+        if (userContact.Name) {
+          nameInput.value = userContact.Name;
+          nameInput.disabled = true;
+          nameInput.setAttribute('disabled', 'disabled');
+        } else {
+          nameInput.value = '';
+          nameInput.disabled = false;
+          nameInput.removeAttribute('disabled');
+        }
+        if (userContact.Phone) {
+          phoneInput.value = userContact.Phone;
+          phoneInput.disabled = true;
+          phoneInput.setAttribute('disabled', 'disabled');
+        } else {
+          phoneInput.value = '';
+          phoneInput.disabled = false;
+          phoneInput.removeAttribute('disabled');
+        }
+      } else {
+        contactFound = false;
+        userContact = null;
+        nameInput.value = '';
+        nameInput.disabled = false;
+        nameInput.removeAttribute('disabled');
+        phoneInput.value = '';
+        phoneInput.disabled = false;
+        phoneInput.removeAttribute('disabled');
+      }
+      fetchCases();
+    }).catch(() => {
+      contactFound = false;
+      userContact = null;
+      const nameInput = root.getElementById('contactName');
+      const phoneInput = root.getElementById('phone');
+      if (nameInput) {
+        nameInput.value = '';
+        nameInput.disabled = false;
+        nameInput.removeAttribute('disabled');
+      }
+      if (phoneInput) {
+        phoneInput.value = '';
+        phoneInput.disabled = false;
+        phoneInput.removeAttribute('disabled');
+      }
+      fetchCases();
+    });
+  };
+
+  const form = root.getElementById('caseForm');
+  if (form) {
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const contactName = root.getElementById('contactName').value;
+      const phone = root.getElementById('phone').value;
+      const subject = root.getElementById('subject').value;
+      const description = root.getElementById('description').value;
+
+      const casePayload = {
+        subject,
+        description,
+        contactName,
+        phone
+      };
+
+      const apiPermalink = contactFound ?
+        "salesforce-create-case-for-contact" :
+        "salesforce-create-contact-and-case";
+
+      sdk.connectors.execute({
+        permalink: apiPermalink,
+        method: "POST",
+        payload: casePayload
+      }).then(() => {
+        form.reset();
+        fetchContactAndMaybeCases();
+      }).catch(() => {
+        alert('Error submitting case.');
+      });
+    });
+  }
+
+  fetchContactAndMaybeCases();
+})();
+</script>

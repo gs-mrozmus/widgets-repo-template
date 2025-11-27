@@ -1,39 +1,14 @@
 {
   "widgets": [
     {
-      "title": "Custom External Widget",
-      "description": "External Widget for displaying interesting content",
-      "version": "1.0.1",
-      "category": "external",
-      "type": "custom_external_widget",
-      "imageName": "custom_external_widget",
-      "content": {
-        "endpoint": "https://raw.githubusercontent.com/gs-mrozmus/widgets-repo-template/refs/heads/main/widgets/custom_external_widget/content.html",
-        "method": "GET",
-        "requiresAuthentication": false,
-        "cacheStrategy": "no-cache"
-      },
-      "containers": [
-        "Full width"
-      ],
-      "widgetsLibrary": true,
-      "settings": {
-        "configurable": true,
-        "editable": true,
-        "removable": true,
-        "shared": false,
-        "movable": false
-      }
-    },
-    {
-      "title": "Demo widget",
-      "description": "Demo widget for displaying interesting content",
+      "title": "Salesforce development widget",
+      "description": "WIP widget",
       "version": "1.0.0",
-      "category": "Demo",
-      "type": "demo_widget",
-      "imageName": "demo_widget",
+      "category": "WIP",
+      "type": "salesforce",
+      "imageName": "salesforce_widget",
       "content": {
-        "endpoint": "https://raw.githubusercontent.com/gs-mrozmus/widgets-repo-template/refs/heads/main/widgets/demo_widget/content.html",
+        "endpoint": "https://raw.githubusercontent.com/gs-mrozmus/widgets-repo-template/refs/heads/sf-cases/widgets/salesforce/content.html",
         "method": "GET",
         "requiresAuthentication": false,
         "cacheStrategy": "no-cache"
