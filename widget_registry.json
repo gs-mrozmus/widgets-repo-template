@@ -3,9 +3,9 @@
     {
       "title": "marcin widget",
       "description": "Demo widget for presentation purposes",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": "marcin",
-      "type": "demo_widget",
+      "type": "marcin_widget",
       "imageName": "marcin_widget",
       "content": {
         "endpoint": "https://raw.githubusercontent.com/gs-mrozmus/widgets-repo-template/refs/heads/main/widgets/demo_widget/content.html",
