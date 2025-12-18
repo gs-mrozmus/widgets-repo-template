@@ -1,14 +1,14 @@
 {
   "widgets": [
     {
-      "title": "marcin widget",
-      "description": "Demo widget for presentation purposes",
-      "version": "1.0.1",
-      "category": "marcin",
-      "type": "marcin_widget",
-      "imageName": "marcin_widget",
+      "title": "Posts displayer",
+      "description": "Display specific user posts",
+      "version": "1.0.0",
+      "category": "Posts",
+      "type": "posts_displayer",
+      "imageName": "banner",
       "content": {
-        "endpoint": "https://raw.githubusercontent.com/gs-mrozmus/widgets-repo-template/refs/heads/main/widgets/demo_widget/content.html",
+        "endpoint": "https://jsonplaceholder.typicode.com/posts",
         "method": "GET",
         "requiresAuthentication": false,
         "cacheStrategy": "no-cache"
@@ -23,6 +23,23 @@
         "removable": true,
         "shared": false,
         "movable": false
+      },
+      "configuration": {
+        "properties": [
+          {
+            "name": "userId",
+            "type": "number",
+            "label": "User ID",
+            "rules": {
+              "required": true
+            },
+            "description": "Filter posts based on user ID",
+            "defaultValue": 1
+          }
+        ]
+      },
+      "defaultConfig": {
+        "userId": 1
       }
     }
   ]
