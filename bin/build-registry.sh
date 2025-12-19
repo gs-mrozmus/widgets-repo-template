@@ -102,29 +102,12 @@ if [ ! -d "$WIDGETS_DIR" ]; then
 fi
 
 # Read global configuration from defaults
-REPO=$(jq -r '.repository' "$DEFAULTS_FILE")
 CONTENT_FILE=$(jq -r '.contentFile' "$DEFAULTS_FILE")
 CONTENT_METHOD=$(jq -r '.contentMethod' "$DEFAULTS_FILE")
 REQUIRES_AUTH=$(jq -r '.requiresAuthentication' "$DEFAULTS_FILE")
 CACHE_STRATEGY=$(jq -r '.cacheStrategy' "$DEFAULTS_FILE")
 
-# Auto-detect current Git branch
-if ! git rev-parse --git-dir > /dev/null 2>&1; then
-  error "Not a git repository. Cannot detect branch."
-  exit 1
-fi
-
-BRANCH=$(git rev-parse --abbrev-ref HEAD)
-
-if [ "$BRANCH" = "HEAD" ]; then
-  # Detached HEAD state - try to get the commit SHA
-  warning "In detached HEAD state"
-  BRANCH=$(git rev-parse --short HEAD)
-  warning "Using commit SHA: $BRANCH"
-fi
-
 success "Loaded configuration from $DEFAULTS_FILE"
-success "Detected Git branch: $BRANCH"
 
 # Initialize widgets array
 WIDGETS_JSON="[]"
@@ -199,7 +182,7 @@ for widget_dir in "$WIDGETS_DIR"/*; do
   fi
 
   # Generate content endpoint URL with the correct content file
-  endpoint="https://raw.githubusercontent.com/${REPO}/refs/heads/${BRANCH}/${WIDGETS_DIR}/${widget_name}/${content_file_name}"
+  endpoint="./${WIDGETS_DIR}/${widget_name}/${content_file_name}"
   
   # Build the widget object by merging defaults + widget.json + auto-generated fields
   # Filter out global config fields from defaults (keep only widget-specific defaults)
@@ -213,7 +196,7 @@ for widget_dir in "$WIDGETS_DIR"/*; do
     --arg cacheStrategy "$CACHE_STRATEGY" \
     '
     # Merge all sources
-    ($defaults[0] | del(.repository, .contentFile, .contentMethod, .requiresAuthentication, .cacheStrategy)) * $widget[0] * {
+    ($defaults[0] | del(.visibility, .contentFile, .contentMethod, .requiresAuthentication, .cacheStrategy)) * $widget[0] * {
       "type": $type,
       "content": {
         "endpoint": $endpoint,
@@ -225,6 +208,7 @@ for widget_dir in "$WIDGETS_DIR"/*; do
     # Remove widget-level content fields if they were used (they belong in content object only, or are used for URL generation)
     del(.contentFile, .contentMethod, .requiresAuthentication, .cacheStrategy) |
     # Reorder fields: priority fields first, then the rest
+    # configuration and defaultConfig are optional fields for dynamic widget customization
     {
       title,
       description,
@@ -232,8 +216,12 @@ for widget_dir in "$WIDGETS_DIR"/*; do
       category,
       type,
       imageName,
-      content
-    } + .
+      content,
+      configuration,
+      defaultConfig
+    } + . |
+    # Remove null values from optional fields that were not provided
+    del(.configuration | nulls) | del(.defaultConfig | nulls)
     ')
   
   # Add to widgets array

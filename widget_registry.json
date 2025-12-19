@@ -1,17 +1,83 @@
 {
   "widgets": [
     {
-      "title": "marcin widget",
-      "description": "Demo widget for presentation purposes",
-      "version": "1.0.1",
-      "category": "marcin",
-      "type": "marcin_widget",
-      "imageName": "marcin_widget",
+      "title": "Card Grid",
+      "description": "A configurable card grid widget demonstrating dynamic layout and styling options",
+      "version": "1.0.0",
+      "category": "Content",
+      "type": "card_grid",
+      "imageName": "banner",
       "content": {
-        "endpoint": "https://raw.githubusercontent.com/gs-mrozmus/widgets-repo-template/refs/heads/main/widgets/demo_widget/content.html",
+        "endpoint": "./widgets/card_grid/content.html",
         "method": "GET",
         "requiresAuthentication": false,
         "cacheStrategy": "no-cache"
+      },
+      "configuration": {
+        "properties": {
+          "cards_per_row": {
+            "name": "cards_per_row",
+            "type": "number",
+            "label": "Cards Per Row",
+            "defaultValue": 3
+          },
+          "total_cards": {
+            "name": "total_cards",
+            "type": "number",
+            "label": "Total Cards",
+            "defaultValue": 6
+          },
+          "card_background": {
+            "name": "card_background",
+            "type": "color",
+            "label": "Card Background",
+            "defaultValue": "#ffffff"
+          },
+          "card_text_color": {
+            "name": "card_text_color",
+            "type": "color",
+            "label": "Text Color",
+            "defaultValue": "#1f2937"
+          },
+          "accent_color": {
+            "name": "accent_color",
+            "type": "color",
+            "label": "Accent Color",
+            "defaultValue": "#3b82f6"
+          },
+          "title_size": {
+            "name": "title_size",
+            "type": "text",
+            "label": "Title Size (small, medium, large)",
+            "defaultValue": "medium"
+          },
+          "card_style": {
+            "name": "card_style",
+            "type": "text",
+            "label": "Card Style (flat, shadow, bordered)",
+            "defaultValue": "shadow"
+          },
+          "show_icons": {
+            "name": "show_icons",
+            "type": "text",
+            "label": "Show Icons (yes, no)",
+            "defaultValue": "yes"
+          }
+        },
+        "required": [
+          "cards_per_row",
+          "total_cards"
+        ]
+      },
+      "defaultConfig": {
+        "cards_per_row": 3,
+        "total_cards": 6,
+        "card_background": "#ffffff",
+        "card_text_color": "#1f2937",
+        "accent_color": "#3b82f6",
+        "title_size": "medium",
+        "card_style": "shadow",
+        "show_icons": "yes"
       },
       "containers": [
         "Full width"

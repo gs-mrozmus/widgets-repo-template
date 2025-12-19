@@ -1,5 +1,5 @@
 {
-  "repository": "gs-mrozmus/widgets-repo-template",
+  "visibility": "private",
   "contentFile": "content.html",
   "contentMethod": "GET",
   "requiresAuthentication": false,
